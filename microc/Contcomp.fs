@@ -351,7 +351,7 @@ let cProgram (Prog topdecs) : instr list =
     let (mainlab, _, mainparams) = lookup funEnv "main"
     let argc = List.length mainparams
     globalInit 
-    @ [LDARGS; CALL(argc, mainlab); STOP] 
+    @ [LDARGS argc; CALL(argc, mainlab); STOP] 
     @ List.concat functions
 
 (* Compile the program (in abstract syntax) and write it to file

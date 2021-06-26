@@ -19,41 +19,29 @@ let fromString (str : string) : program =
       | exn -> let pos = lexbuf.EndPos 
                failwithf "%s near line %d, column %d\n" 
                   (exn.Message) (pos.Line+1) pos.Column
-             
-(* Parsing from a file *)
+
+// 词法分析程序，info 在调试的时候被调用，显示Token
+// CLex.Token 词法分析程序入口
 let token buf = 
     let res = CLex.Token buf
-    info (fun () ->
+    msg <|
           match res with
-           |CPar.EOF -> printf "%A\n" res
-           |_ -> printf "%A, " res
-           )
+           |CPar.EOF -> sprintf "%A\n" res
+           |_ -> sprintf "%A, " res
+           
     res
-
+(* Parsing from a file *)
 let fromFile (filename : string) =
     use reader = new StreamReader(filename)
     let lexbuf = Lexing.LexBuffer<char>.FromTextReader reader
     try 
-      info (fun ()-> printfn "\nToken:")
+      msg "\nToken:\n"
+      
+      //CPar.Main  语法分析主程序 
       let ast = CPar.Main token lexbuf in
-        info (fun ()-> printfn "\nAST:");
+        msg "\nAST:\n";
         ast
     with 
       | exn -> let pos = lexbuf.EndPos 
                failwithf "%s in file %s near line %d, column %d\n" 
                   (exn.Message) filename (pos.Line+1) pos.Column
-
-// let tokens (filename : string) =
-//     use reader = new StreamReader(filename)
-//     let lexbuf = Lexing.LexBuffer<char>.FromTextReader reader
-//     try 
-//       let rec loop () = 
-//         let tok = CLex.Token lexbuf
-//         printf "%A, " tok
-//         if tok = CPar.GT then () else loop () 
-//       loop ()
-//     with 
-//       | exn -> let pos = lexbuf.EndPos 
-//                failwithf "%s in file %s near line %d, column %d\n" 
-//                   (exn.Message) filename (pos.Line+1) pos.Column
-//       | :? System.Exception as ex -> ()

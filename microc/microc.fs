@@ -6,7 +6,7 @@ let argv = System.Environment.GetCommandLineArgs();;
 
 let args = Array.filter ((<>) "-g") argv
 
-let _ = printfn "Micro-C Stack VM compiler v 1.1.0 of 2021-3-22";;
+let _ = printfn "Micro-C Stack VM compiler v 1.2.0 of 2021-5-12";;
 
 let _ = 
    if args.Length > 1 then
@@ -17,9 +17,9 @@ let _ =
              else source
       let target = stem + ".out"
 
-      printfn "Compiling %s to %s" source target
+      printfn "Compiling %s ......\n" source 
       
-      try  (let instrs = compileToFile (fromFile source) target;
+      try  (let instrs = compileToFile (fromFile source) stem;
             // printf "StackVM code:\n%A\n" instrs;
             printfn "Numeric code saved in file:\n\t%s\nPlease run with VM." target;
             )

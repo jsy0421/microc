@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Include="Absyn.fs" />
+    <Compile Include="Debug.fs" />
     <Compile Include="CPar.fs" />
     <Compile Include="CLex.fs" />
     <Compile Include="Parse.fs" />
